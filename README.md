@@ -105,6 +105,7 @@ you may play in the</u> <color=#62b8ff><b>light</b></color></size>
 <size=20>Do their job</size>
 ```
 </details>
+
 <details>
 <summary>After:</summary>
 ```
