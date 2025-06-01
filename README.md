@@ -76,7 +76,8 @@ tagName {
 | Show | true/false | hintId, hintX, hintY, hintDuration | Shows the hint, use false to disable it. |
 
 # Example of changing normal tags to .sse
-### Before:
+<details>
+<summary>Before:</summary>
 ```
 <line-height=-200>\n</line-height>
 <size=60><i><color=#ffe6a6>📝</color> <u>You are</u><color=#e85c39></i>❓</color></size>
@@ -103,8 +104,9 @@ you may play in the</u> <color=#62b8ff><b>light</b></color></size>
 <size=20>Your job is to help others</size><size=20>
 <size=20>Do their job</size>
 ```
+</details>
 <details>
-<summary>### After:</summary>
+<summary>After:</summary>
 ```
 roleShowManager{
     execute: header, subHeader, area46InfoHeader, lastText;
