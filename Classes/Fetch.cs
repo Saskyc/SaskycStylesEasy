@@ -99,7 +99,7 @@ namespace SaskycStylesTestt.Classes
                         else
                         {
                             // Not a registered Property → treat as a local variable (x:100, etc.)
-                            fetchedTag.Variables[key] = value;
+                            fetchedTag.Variables[key.ToLower()] = value;
                         }
                     }
 

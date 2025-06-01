@@ -64,9 +64,10 @@ namespace SaskycStylesEasy.Classes
         }
     
         
-        var start = "";
-        var end = "";
-        string innerText = text;
+        var normalStarts   = new StringBuilder();
+        var normalEnds     = new StringBuilder();
+        var inlineStarts   = new StringBuilder();
+        string innerText   = text;
 
         string encloseValue = null;
         string additionalResult = "";
@@ -115,6 +116,15 @@ namespace SaskycStylesEasy.Classes
                 continue;
             }
 
+            if (property.Key is Rotate)
+            {
+                var cspace = "0";
+                if(foundTag.Variables.ContainsKey("cspace"))
+                    cspace = foundTag.Variables["cspace"];
+                property.Key.Start = $"<cspace={cspace}>{property.Key.Start}";
+                property.Key.End = $"{property.Key.End}</cspace>";
+            }
+
             if (property.Key is Mark)
             {
                 Log.Debug($"EXECUTING MARK {property.Key.Start}");
@@ -123,13 +133,13 @@ namespace SaskycStylesEasy.Classes
                 var ri = "";
                 var le = "";
                 
-                if(foundTag.Variables.ContainsKey("markUp"))
+                if(foundTag.Variables.ContainsKey("markup"))
                     up = foundTag.Variables["markUp"];
-                if(foundTag.Variables.ContainsKey("markDown"))
+                if(foundTag.Variables.ContainsKey("markdown"))
                     dow = foundTag.Variables["markDown"];
-                if(foundTag.Variables.ContainsKey("markRight"))
+                if(foundTag.Variables.ContainsKey("markright"))
                     ri = foundTag.Variables["markRight"];
-                if(foundTag.Variables.ContainsKey("markLeft"))
+                if(foundTag.Variables.ContainsKey("markleft"))
                     le = foundTag.Variables["markLeft"];
                 
                 Log.Debug($"up: {up}, dow: {dow}, ri: {ri}, le: {le}");
@@ -162,13 +172,26 @@ namespace SaskycStylesEasy.Classes
                 innerText = value;
                 continue;
             }
-
-            start += property.Key.Start.Replace("%value%", value);
-            end = property.Key.End + end;
+            
+            // If this is alpha (or any Property whose End == ""), collect it as “inline”
+            if (string.IsNullOrEmpty(property.Key.End))
+            {
+                // e.g. property.Key.Start == "<alpha=%value%>"
+                inlineStarts.Append(property.Key.Start.Replace("%value%", value));
+                continue;
+            }
+            
+            // Otherwise, it’s a normal open/close tag
+            normalStarts.Append(property.Key.Start.Replace("%value%", value));
+            // Prepend the closing tag so that when all ends are concatenated, they close in reverse order
+            normalEnds.Insert(0, property.Key.End);
         }
 
         // 4) Build the main output for this tag
-        var result = start + innerText + end;
+        var result = normalStarts.ToString()
+                     + inlineStarts.ToString()
+                     + innerText
+                     + normalEnds.ToString();
         
         // 5) Apply “enclose” (wrapping) if present
         if (!string.IsNullOrEmpty(encloseValue))
@@ -240,19 +263,19 @@ namespace SaskycStylesEasy.Classes
             {
             }
             
-            if (PlayerDisplay.Get(player).HasHint(foundTag.Variables["hintId"]))
-                PlayerDisplay.Get(player).RemoveHint(PlayerDisplay.Get(player).GetHint(foundTag.Variables["hintId"]));
+            if (PlayerDisplay.Get(player).HasHint(foundTag.Variables["hintid"]))
+                PlayerDisplay.Get(player).RemoveHint(PlayerDisplay.Get(player).GetHint(foundTag.Variables["hintid"]));
             
             var hint = new Hint()
             {
-                Id = foundTag.Variables["hintId"],
-                XCoordinate = float.Parse(foundTag.Variables["hintX"]),
-                YCoordinate = float.Parse(foundTag.Variables["hintY"]),
+                Id = foundTag.Variables["hintid"],
+                XCoordinate = float.Parse(foundTag.Variables["hintx"]),
+                YCoordinate = float.Parse(foundTag.Variables["hinty"]),
                 Text = result + additionalResult,
             };
             
             PlayerDisplay.Get(player).AddHint(hint);
-            PlayerDisplay.Get(player).RemoveAfter(hint, float.Parse(foundTag.Variables["hintTime"]));
+            PlayerDisplay.Get(player).RemoveAfter(hint, float.Parse(foundTag.Variables["hintduration"]));
         }
         
         // 9) Finally, apply “execute” if present
