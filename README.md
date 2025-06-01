@@ -34,7 +34,7 @@ show means to actually show hint you require to add hintX, hintY, hintId and sho
 
 # The tags
 
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| Tag  | Usage | Required tags | Information |
+| ------------- | ------------- | ------------- | ------------- |
+| Color  | Hex  | None | Changes the color of the text |
+| Align | Left/Center/Right | None | Changes the align |
