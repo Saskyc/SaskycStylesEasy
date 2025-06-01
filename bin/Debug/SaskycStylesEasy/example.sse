@@ -1,0 +1,11 @@
+planetTag(float pos, float rot) {
+  text: 🌍;
+  rotate: rot;
+  pos: pos;
+  size: 50;
+  alpha: #50;
+  color: #131313;
+}
+planetLine() {
+  Repeat: planetTag(i * 50, i * 50), 5;
+}

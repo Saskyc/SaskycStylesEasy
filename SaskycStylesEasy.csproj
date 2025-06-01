@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{C2FF7E23-CB53-44B0-8F08-319BF60A3A5C}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>SaskycStylesEasy</RootNamespace>
+        <AssemblyName>SaskycStylesEasy</AssemblyName>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <LangVersion>12</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\Downloads\0Harmony (1).dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\CommandSystem.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.API, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.API.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CreditTags, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.CreditTags.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomItems, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.CustomItems.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.CustomRoles, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.CustomRoles.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Events, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.Events.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Loader, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.Loader.dll</HintPath>
+        </Reference>
+        <Reference Include="Exiled.Permissions, Version=9.6.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\Exiled.Permissions.dll</HintPath>
+        </Reference>
+        <Reference Include="HintServiceMeow">
+          <HintPath>..\..\..\Downloads\HintServiceMeow-Exiled (2).dll</HintPath>
+        </Reference>
+        <Reference Include="LabApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=Amd64">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\LabApi.dll</HintPath>
+        </Reference>
+        <Reference Include="Mirror">
+          <HintPath>..\..\..\Downloads\ScriptedEvents\Dev (8)\Mirror.dll</HintPath>
+        </Reference>
+        <Reference Include="NorthwoodLib, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\NorthwoodLib.dll</HintPath>
+        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>..\..\..\Downloads\ScriptedEvents\Dev (8)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule">
+          <HintPath>..\..\..\Downloads\ScriptedEvents\Dev (8)\UnityEngine.PhysicsModule.dll</HintPath>
+        </Reference>
+        <Reference Include="YamlDotNet, Version=11.0.0.0, Culture=neutral, PublicKeyToken=ec19458f3c15af5e, processorArchitecture=MSIL">
+          <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\YamlDotNet.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="Classes\Ensuring.cs" />
+        <Compile Include="Classes\Fetch.cs" />
+        <Compile Include="Classes\Property.cs" />
+        <Compile Include="Classes\Tag.cs" />
+        <Compile Include="Commands\TagTest.cs" />
+        <Compile Include="Config.cs" />
+        <Compile Include="Propertiess\Show.cs" />
+        <Compile Include="SaskycStylesEasy.cs" />
+        <Compile Include="Propertiess\AdditionProperty.cs" />
+        <Compile Include="Propertiess\Align.cs" />
+        <Compile Include="Propertiess\Bold.cs" />
+        <Compile Include="Propertiess\Color.cs" />
+        <Compile Include="Propertiess\Enclose.cs" />
+        <Compile Include="Propertiess\ExecuteProperty.cs" />
+        <Compile Include="Propertiess\Mark.cs" />
+        <Compile Include="Propertiess\TextProperty.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

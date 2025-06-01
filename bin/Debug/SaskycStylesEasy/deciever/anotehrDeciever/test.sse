@@ -1,0 +1,21 @@
+myTag {
+
+}
+
+myOtherTag(colorr, boldd) {
+    bold: boldd;
+    color: colorr;
+    text: Kitchen;
+}
+
+MyColorTag(colorr) {
+    text: override;
+    bold: true;
+    x: 100;
+    execute: myOtherTag(x, bold);
+    markUp: 200;
+    markLeft: 100;
+    markDown: 100;
+    mark: hexColor;
+    markRight: 100;
+}
