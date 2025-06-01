@@ -1,0 +1,32 @@
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\obj\Debug\SaskycStylesTestt.csproj.AssemblyReference.cache
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\obj\Debug\SaskycStylesTestt.csproj.CoreCompileInputs.cache
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\SaskycStylesEasy.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\SaskycStylesEasy.pdb
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\obj\Debug\SaskycStylesEasy.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\obj\Debug\SaskycStylesEasy.pdb
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\0Harmony (1).dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Assembly-CSharp-Publicized.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\CommandSystem.Core.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.API.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CreditTags.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CustomItems.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CustomRoles.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Events.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Loader.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Permissions.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\HintServiceMeow-Exiled (2).dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\LabApi.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Mirror.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\NorthwoodLib.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\UnityEngine.CoreModule.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\UnityEngine.PhysicsModule.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\YamlDotNet.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\UnityEngine.SharedInternalsModule.dll
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.API.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CreditTags.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CustomItems.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.CustomRoles.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Events.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Loader.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\bin\Debug\Exiled.Permissions.xml
+C:\Users\Marti\RiderProjects\SaskycStylesTestt\SaskycStylesTestt\obj\Debug\SaskycStylesTestt.csproj.CopyComplete
