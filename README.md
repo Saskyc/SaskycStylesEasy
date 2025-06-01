@@ -1,4 +1,6 @@
 # SSE
+https://img.shields.io/github/downloads/saskyc/SaskycStylesEasy/total.svg
+
 Long time ago was created https://docs.unity3d.com/Packages/com.unity.textmeshpro@3.2/manual/RichText.html.
 Idea created from day to day merged and proggramed into 3AM when next day had school.
 - With the help of ChatGPT ♥️.
