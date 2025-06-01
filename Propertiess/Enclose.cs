@@ -1,7 +1,10 @@
 ﻿using System;
-using SaskycStylesTestt.Classes;
+using SaskycStylesEasy.Classes;
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.API.Features;
 
-namespace SaskycStylesTestt.Propertiess;
+namespace SaskycStylesEasy.Propertiess;
 
 public class Enclose : Property
 {
@@ -12,5 +15,34 @@ public class Enclose : Property
     
     public override ValueType ParserValue { get; set; } = ValueType.String;
 
-    // Optionally, you can have extra logic here if needed later
+    public string Enclosen(Tag tag, Dictionary<string, string> localVariables, Player player, string result)
+    {
+        var enclosingTags = Tag.SplitTopLevel(tag.Properties[this])
+            .Where(t => !string.IsNullOrEmpty(t));
+
+        var childOutput = "";
+        foreach (var enclosingTagEntry in enclosingTags)
+        {
+            var (tagName, rawArgs) = Tag.ParseTagWithArgs(enclosingTagEntry);
+
+            var resolvedArgs = rawArgs
+                .Select(a => localVariables.TryGetValue(a, out var variable) ? variable : a)
+                .ToArray();
+            
+            childOutput = Tag.ExecuteTag(
+                player, tagName,
+                resolvedArgs,
+                out var start,
+                out var content,
+                out var end,
+                defaultText: result
+            );
+            
+            result = start + result + end;
+        }
+        
+        Console.WriteLine("------------------------------");
+        Console.WriteLine($"    RESULT F: {result}");
+        return result;
+    }
 }

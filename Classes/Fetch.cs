@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using Exiled.API.Features;
-using SaskycStylesEasy.Classes;
 
-namespace SaskycStylesTestt.Classes
+namespace SaskycStylesEasy.Classes
 {
     public static class Fetch
     {
+        public static Regex TagRegex = new(@"(?<tag>\w+)(\s*\((?<args>[^\)]*)\))?\s*\{(?<body>[^}]*)\}", RegexOptions.Compiled);
+        public static Regex PropertyRegex = new(@"(?<key>\w+)\s*:\s*(?<value>[^;]+);", RegexOptions.Compiled);
+        
         public static void FetchAllPropertiesToTags()
         {
             var dllDirectory = Paths.Plugins;
@@ -44,11 +45,7 @@ namespace SaskycStylesTestt.Classes
                 }
 
                 // Reverted regex: capture tagName, optional (args), and { body } up to the first }
-                var tagMatches = Regex.Matches(
-                    content,
-                    @"(?<tag>\w+)(\s*\((?<args>[^\)]*)\))?\s*\{(?<body>[^}]*)\}",
-                    RegexOptions.Multiline
-                );
+                var tagMatches = TagRegex.Matches(content);
 
                 foreach (Match match in tagMatches)
                 {
@@ -78,7 +75,10 @@ namespace SaskycStylesTestt.Classes
                     Log.Debug($"\n🔍 Validating tag: {tagName}");
 
                     // Find all key:value; pairs inside the tag body
-                    var propertyMatches = Regex.Matches(body, @"(?<key>\w+)\s*:\s*(?<value>[^;]+);");
+                    
+                    
+                    
+                    var propertyMatches = PropertyRegex.Matches(body);
                     foreach (Match propMatch in propertyMatches)
                     {
                         var key = propMatch.Groups["key"].Value.Trim();

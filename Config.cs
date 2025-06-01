@@ -1,6 +1,6 @@
 ﻿using Exiled.API.Interfaces;
 
-namespace SaskycStylesTestt;
+namespace SaskycStylesEasy;
 
 public class Config : IConfig
 {

@@ -1,6 +1,6 @@
-﻿using SaskycStylesTestt.Classes;
+﻿using SaskycStylesEasy.Classes;
 
-namespace SaskycStylesTestt.Propertiess
+namespace SaskycStylesEasy.Propertiess
 {
     public class Align : Property
     {

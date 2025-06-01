@@ -1,11 +1,7 @@
-﻿using System;
-using Exiled.API.Features;
-using Exiled.CustomItems.API.Features;
-using Exiled.CustomRoles.API.Features;
+﻿using Exiled.API.Features;
 using SaskycStylesEasy.Classes;
-using SaskycStylesTestt.Classes;
 
-namespace SaskycStylesTestt 
+namespace SaskycStylesEasy 
 {
     public class SaskycStylesEasy : Plugin<Config>
     {

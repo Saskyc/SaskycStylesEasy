@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace SaskycStylesTestt.Classes
+namespace SaskycStylesEasy.Classes
 {
     public abstract class Property
     {
@@ -11,7 +11,7 @@ namespace SaskycStylesTestt.Classes
         public abstract ValueType ParserValue { get; set; }
         public abstract string End { get; set; }
         
-        public static List<Property> List = new List<Property>();
+        public static List<Property> List = new();
         
         public static void RegisterAll()
         {

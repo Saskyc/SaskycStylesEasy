@@ -2,7 +2,6 @@
 using CommandSystem;
 using Exiled.API.Features;
 using SaskycStylesEasy.Classes;
-using SaskycStylesTestt.Classes;
 
 namespace SaskycStylesEasy.Commands
 {
@@ -38,7 +37,7 @@ namespace SaskycStylesEasy.Commands
             
             var tagName = arguments.At(1);
 
-            Tag.ExecuteTag(senderPlayer, tagName, [], "CommandText");
+            Tag.ExecuteTag(senderPlayer, tagName, [], out var start, out var content, out var end, "CommandText");
             
             //Successful
             response = "Command executed";

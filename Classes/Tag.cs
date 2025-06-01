@@ -4,11 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Exiled.API.Features;
-using HintServiceMeow.Core.Extension;
-using HintServiceMeow.Core.Utilities;
-using SaskycStylesTestt.Classes;
-using SaskycStylesTestt.Propertiess;
-using Hint = HintServiceMeow.Core.Models.Hints.Hint;
+using SaskycStylesEasy.Propertiess;
 
 namespace SaskycStylesEasy.Classes
 {
@@ -23,7 +19,7 @@ namespace SaskycStylesEasy.Classes
         
         public List<string> Arguments { get; set; } = new();
         
-        public static List<Tag> List = new List<Tag>();
+        public static List<Tag> List = new();
         
         public Dictionary<string, string> Variables { get; set; } = new();
         
@@ -35,294 +31,231 @@ namespace SaskycStylesEasy.Classes
             Variables = new Dictionary<string, string>();
         }
 
-        public static string ExecuteTag(Player player, string tag, string[] arguments, string text, Dictionary<string, string> localVariables = null)
+        public object HasProperty<T>(string[] arguments, Dictionary<string, string> localVariables = null)
         {
-        Fetch.FetchAllPropertiesToTags();
-
-        // 1) Find the tag
-        if (List.All(x => x.Name != tag))
-        {
-            Log.Error($"Tag {tag} you tried to execute was not found.");
-            return text;
-        }
-
-        localVariables ??= new Dictionary<string, string>();
-
-        var foundTag = List.Find(x => x.Name == tag);
-
-        // 2) Bind incoming arguments into localVariables for this tag
-        for (int i = 0; i < foundTag.Arguments.Count && i < arguments.Length; i++)
-        {
-            // arguments[i] might be "#whatever" or a literal—store it under its argument name
-            localVariables[foundTag.Arguments[i]] = arguments[i];
-        }
-        
-        // 2b) Bind tag‐level variables (e.g. “x: 100;”) into localVariables
-        foreach (var kv in foundTag.Variables)
-        {
-            localVariables[kv.Key] = kv.Value;
-        }
-    
-        
-        var normalStarts   = new StringBuilder();
-        var normalEnds     = new StringBuilder();
-        var inlineStarts   = new StringBuilder();
-        string innerText   = text;
-
-        string encloseValue = null;
-        string additionalResult = "";
-        ExecuteProperty executeProp = null;
-        Show show = null;
-        
-        // 3) Process each property of this tag
-        foreach (var property in foundTag.Properties)
-        {
-            Log.Info(property.Key.Name);
+            localVariables ??= new Dictionary<string, string>();
             
-            var value = property.Value.Trim();
+            foreach (var property in Properties)
+            {
+                var value = property.Value.Trim();
+            
+                for (int i = 0; i < this.Arguments.Count && i < arguments.Length; i++)
+                {
+                    var pattern = $@"\b{Regex.Escape(this.Arguments[i])}\b";
+                    value = Regex.Replace(value, pattern, arguments[i]);
+                }
+            
+                value = Regex.Replace(value, @"#(\w+)", match =>
+                {
+                    var key = match.Groups[1].Value;
+                    return localVariables.TryGetValue(key, out var val) ? val : match.Value;
+                });
 
-            // 1) Substitute tag‐arguments inside “value”
+            
+                localVariables[property.Key.Name] = value;
+
+                if (property.Key is not T myProperty) continue;
+                
+                if (property.Key.ParserValue != Property.ValueType.Boolean) return myProperty;
+                
+                var boolText = value.Trim().ToLower();
+                if (boolText == "false") return null;
+
+                return myProperty;
+            }
+            
+            return null;
+        }
+        
+        public static string ExecuteTag(Player player, string tag, string[] arguments, out string startTags, out string content, out string endTags, string defaultText = "", Dictionary<string, string> localVariables = null)
+        {
+            Fetch.FetchAllPropertiesToTags();
+            startTags = string.Empty;
+            content = string.Empty;
+            endTags = string.Empty;
+            
+            // 1) Find the tag
+            if (List.All(x => x.Name != tag))
+            {
+                Log.Error($"Tag {tag} you tried to execute was not found.");
+                return defaultText;
+            }
+
+            localVariables ??= new Dictionary<string, string>();
+
+            var foundTag = List.Find(x => x.Name == tag);
+
+            // 2) Bind incoming arguments into localVariables for this tag
             for (int i = 0; i < foundTag.Arguments.Count && i < arguments.Length; i++)
             {
-                var pattern = $@"\b{Regex.Escape(foundTag.Arguments[i])}\b";
-                value = Regex.Replace(value, pattern, arguments[i]);
+                // arguments[i] might be "#whatever" or a literal—store it under its argument name
+                localVariables[foundTag.Arguments[i]] = arguments[i];
             }
-
-            // 2) Substitute any “#var” placeholders from the current localVariables
-            value = Regex.Replace(value, @"#(\w+)", match =>
-            {
-                var key = match.Groups[1].Value;
-                return localVariables.TryGetValue(key, out var val) ? val : match.Value;
-            });
-
-            // 3) NOW: Bind THIS property’s value into localVariables so that
-            //    future calls like “myOtherTag(color, bold)” can resolve “bold”:
-            localVariables[property.Key.Name] = value;
-
-            // … then continue with Boolean check, “enclose”, “execute”, etc.
-            if (property.Key.ParserValue == Property.ValueType.Boolean)
-            {
-                var boolText = value.Trim().ToLower();
-                if (boolText == "false") continue;
-            }
-            
-            if (property.Key is Show showProperty)
-            {
-                Log.Info("At least found show");
-                
-                var showText = value.Trim().ToLower();
-                if (showText == "false") continue;
-                show = showProperty;
-                continue;
-            }
-
-            if (property.Key is Rotate)
-            {
-                var cspace = "0";
-                if(foundTag.Variables.ContainsKey("cspace"))
-                    cspace = foundTag.Variables["cspace"];
-                property.Key.Start = $"<cspace={cspace}>{property.Key.Start}";
-                property.Key.End = $"{property.Key.End}</cspace>";
-            }
-
-            if (property.Key is Mark)
-            {
-                Log.Debug($"EXECUTING MARK {property.Key.Start}");
-                var up = "";
-                var dow = "";
-                var ri = "";
-                var le = "";
-                
-                if(foundTag.Variables.ContainsKey("markup"))
-                    up = foundTag.Variables["markUp"];
-                if(foundTag.Variables.ContainsKey("markdown"))
-                    dow = foundTag.Variables["markDown"];
-                if(foundTag.Variables.ContainsKey("markright"))
-                    ri = foundTag.Variables["markRight"];
-                if(foundTag.Variables.ContainsKey("markleft"))
-                    le = foundTag.Variables["markLeft"];
-                
-                Log.Debug($"up: {up}, dow: {dow}, ri: {ri}, le: {le}");
-
-                if (up == "" || dow == "" || ri == "" || le == "")
-                    Log.Debug(
-                        $"Please implement in your {foundTag.Name} the markUp, markDown, markRight, markLeft values");
-                
-                property.Key.Start = property.Key.Start.Replace("%up%", up);
-                property.Key.Start = property.Key.Start.Replace("%down%", dow);
-                property.Key.Start = property.Key.Start.Replace("%right%", ri);
-                property.Key.Start = property.Key.Start.Replace("%left%", le);
-                //property.Key.Start.Replace("%color%", result);
-            }
-            
-            if (property.Key.Name.Equals("enclose", StringComparison.OrdinalIgnoreCase))
-            {
-                encloseValue = value;
-                continue;
-            }
-
-            if (property.Key is ExecuteProperty execProp)
-            {
-                executeProp = execProp;
-                continue;
-            }
-
-            if (property.Key is TextProperty)
-            {
-                innerText = value;
-                continue;
-            }
-            
-            // If this is alpha (or any Property whose End == ""), collect it as “inline”
-            if (string.IsNullOrEmpty(property.Key.End))
-            {
-                // e.g. property.Key.Start == "<alpha=%value%>"
-                inlineStarts.Append(property.Key.Start.Replace("%value%", value));
-                continue;
-            }
-            
-            // Otherwise, it’s a normal open/close tag
-            normalStarts.Append(property.Key.Start.Replace("%value%", value));
-            // Prepend the closing tag so that when all ends are concatenated, they close in reverse order
-            normalEnds.Insert(0, property.Key.End);
-        }
-
-        // 4) Build the main output for this tag
-        var result = normalStarts.ToString()
-                     + inlineStarts.ToString()
-                     + innerText
-                     + normalEnds.ToString();
         
-        // 5) Apply “enclose” (wrapping) if present
-        if (!string.IsNullOrEmpty(encloseValue))
-        {
-            var enclosingTags = SplitTopLevel(encloseValue)
-                .Where(t => !string.IsNullOrEmpty(t));
-
-            Log.Debug($"Enclosing tags to apply: {string.Join(", ", enclosingTags)}");
-
-            foreach (var enclosingTagEntry in enclosingTags)
+            // 2b) Bind tag‐level variables (e.g. “x: 100;”) into localVariables
+            foreach (var kv in foundTag.Variables)
             {
-                Log.Debug($"Processing encloseTag string: \"{enclosingTagEntry}\"");
-                var (tagName, rawArgs) = ParseTagWithArgs(enclosingTagEntry);
-
-                var resolvedArgs = rawArgs
-                    .Select(a => localVariables.ContainsKey(a) ? localVariables[a] : a)
-                    .ToArray();
-
-                Log.Debug($"→ Parsed enclosing: {tagName} with args: [{string.Join(", ", resolvedArgs)}]");
-                var childOutput = ExecuteTag(
-                    player, tagName,
-                    resolvedArgs,
-                    result,
-                    new Dictionary<string, string>(localVariables)
-                );
-
-                Log.Debug($"→ Enclosing child \"{tagName}\" returned: \"{childOutput}\"");
-                result = result + " " + childOutput;
-                Log.Debug($"→ New result after enclosing: \"{result}\"");
+                localVariables[kv.Key] = kv.Value;
             }
-        }
+    
+        
+            var normalStarts   = new StringBuilder();
+            var normalEnds     = new StringBuilder();
+            var inlineStarts   = new StringBuilder();
+            string innerText   = defaultText;
 
-        // 6) Apply “addition” if present
-        if (foundTag.Properties.Any(p => p.Key is AdditionProperty))
-        {
-            foreach (var property in foundTag.Properties.Where(p => p.Key is AdditionProperty))
-            {
-                var tagsToAdd = SplitTopLevel(property.Value)
-                    .Where(t => !string.IsNullOrEmpty(t));
-
-                foreach (var tagEntry in tagsToAdd)
+            string encloseValue = null;
+        
+            // 3) Process each property of this tag
+            Log.Info($"Tag: {foundTag.Name}");
+            foreach (var property in foundTag.Properties)
+            {   
+                Log.Info($"  Property: {property.Key.Name}");
+            
+                var value = property.Value.Trim();
+            
+                for (int i = 0; i < foundTag.Arguments.Count && i < arguments.Length; i++)
                 {
-                    Log.Debug($"Processing additionTag string: \"{tagEntry}\"");
-                    var (tagName, rawArgs) = ParseTagWithArgs(tagEntry);
-
-                    var resolvedArgs = rawArgs
-                        .Select(a => localVariables.ContainsKey(a) ? localVariables[a] : a)
-                        .ToArray();
-
-                    var childOutput = ExecuteTag(
-                        player, tagName,
-                        resolvedArgs,
-                        "",
-                        new Dictionary<string, string>(localVariables)
-                    );
-
-                    Log.Debug($"→ Addition child \"{tagName}\" returned: \"{childOutput}\"");
-                    additionalResult += " " + childOutput;
-                    Log.Debug($"→ additionalResult is now: \"{additionalResult}\"");
+                    var pattern = $@"\b{Regex.Escape(foundTag.Arguments[i])}\b";
+                    value = Regex.Replace(value, pattern, arguments[i]);
                 }
-            }
-        }
+            
+                value = Regex.Replace(value, @"#(\w+)", match =>
+                {
+                    var key = match.Groups[1].Value;
+                    return localVariables.TryGetValue(key, out var val) ? val : match.Value;
+                });
 
-        if (show != null)
-        {
-            Log.Info("Showing hint");
+            
+                localVariables[property.Key.Name] = value;
+            
+                if (property.Key.ParserValue == Property.ValueType.Boolean)
+                {
+                    var boolText = value.Trim().ToLower();
+                    if (boolText == "false") continue;
+                }
+            
+                if (property.Key is Show showProperty)
+                {
+                    var showText = value.Trim().ToLower();
+                    if (showText == "false") continue;
+                    continue;
+                }
 
-            foreach (var property in foundTag.Properties.Where(p => p.Key is AdditionProperty))
-            {
+                if (property.Key is Rotate)
+                {
+                    var cspace = "0";
+                    if(foundTag.Variables.TryGetValue("cspace", out var variable))
+                        cspace = variable;
+                    property.Key.Start = $"<cspace={cspace}>{property.Key.Start}";
+                    property.Key.End = $"{property.Key.End}</cspace>";
+                }
+
+                if (property.Key is Mark)
+                {
+                    Log.Debug($"EXECUTING MARK {property.Key.Start}");
+                    var left = "";
+                    var right = "";
+                    var up = "";
+                    var down = "";
+                
+                    if(foundTag.Variables.TryGetValue("markup", out var variable))
+                        left = variable;
+                    if(foundTag.Variables.TryGetValue("markdown", out var tagVariable))
+                        right = tagVariable;
+                    if(foundTag.Variables.TryGetValue("markright", out var foundTagVariable))
+                        up = foundTagVariable;
+                    if(foundTag.Variables.TryGetValue("markleft", out var variable1))
+                        down = variable1;
+                
+                    Log.Debug($"left: {left}, right: {right}, up: {up}, down: {down}");
+
+                    if (left == "" || right == "" || up == "" || down == "")
+                        Log.Debug(
+                            $"Please implement in your {foundTag.Name} the markUp, markDown, markRight, markLeft values");
+                
+                    property.Key.Start = property.Key.Start.Replace("%up%", left);
+                    property.Key.Start = property.Key.Start.Replace("%down%", right);
+                    property.Key.Start = property.Key.Start.Replace("%right%", up);
+                    property.Key.Start = property.Key.Start.Replace("%left%", down);
+                    //property.Key.Start.Replace("%color%", result);
+                }
+            
+                if (property.Key.Name.Equals("enclose", StringComparison.OrdinalIgnoreCase))
+                {
+                    encloseValue = value;
+                    continue;
+                }
+
+                if (property.Key is ExecuteProperty execProp)
+                {
+                    continue;
+                }
+
+                if (property.Key is TextProperty)
+                {
+                    innerText = value;
+                    continue;
+                }
+            
+                // If this is alpha (or any Property whose End == ""), collect it as “inline”
+                if (string.IsNullOrEmpty(property.Key.End))
+                {
+                    // e.g. property.Key.Start == "<alpha=%value%>"
+                    inlineStarts.Append(property.Key.Start.Replace("%value%", value));
+                    continue;
+                }
+            
+                // Otherwise, it’s a normal open/close tag
+                normalStarts.Append(property.Key.Start.Replace("%value%", value));
+                // Prepend the closing tag so that when all ends are concatenated, they close in reverse order
+                normalEnds.Insert(0, property.Key.End);
             }
+
+            // 4) Build the main output for this tag
+            startTags = normalStarts.ToString() + inlineStarts.ToString();
+            content = innerText;
+            endTags = normalEnds.ToString();
             
-            if (PlayerDisplay.Get(player).HasHint(foundTag.Variables["hintid"]))
-                PlayerDisplay.Get(player).RemoveHint(PlayerDisplay.Get(player).GetHint(foundTag.Variables["hintid"]));
-            
-            var hint = new Hint()
+            var result = normalStarts.ToString()
+                         + inlineStarts.ToString()
+                         + innerText
+                         + normalEnds.ToString();
+        
+            if (foundTag.HasProperty<AdditionProperty>(arguments, localVariables) != null)
             {
-                Id = foundTag.Variables["hintid"],
-                XCoordinate = float.Parse(foundTag.Variables["hintx"]),
-                YCoordinate = float.Parse(foundTag.Variables["hinty"]),
-                Text = result + additionalResult,
-            };
-            
-            PlayerDisplay.Get(player).AddHint(hint);
-            PlayerDisplay.Get(player).RemoveAfter(hint, float.Parse(foundTag.Variables["hintduration"]));
+                var addition = (AdditionProperty)foundTag.HasProperty<AdditionProperty>(arguments, localVariables);
+                result = addition.Add(foundTag, localVariables, player, result);
+            }
+        
+            if (foundTag.HasProperty<Enclose>(arguments, localVariables) != null)
+            {
+                var enclose = (Enclose)foundTag.HasProperty<Enclose>(arguments, localVariables);
+                result = enclose.Enclosen(foundTag, localVariables, player, result);
+            }
+        
+            if (foundTag.HasProperty<Show>(arguments, localVariables) != null)
+            {
+                var show = (Show)foundTag.HasProperty<Show>(arguments, localVariables);
+                show.Hint(foundTag, player, result);
+            }
+        
+            if(foundTag.HasProperty<ExecuteProperty>(arguments, localVariables) != null)
+            {
+                var executeProperty = (ExecuteProperty)foundTag.HasProperty<ExecuteProperty>(arguments, localVariables);
+                executeProperty.Execute(foundTag, localVariables, player, result);
+            }
+
+            return result;
         }
         
-        // 9) Finally, apply “execute” if present
-        if (executeProp != null)
-        {
-            // Use SplitTopLevel instead of string.Split(',')
-            var executeTags = SplitTopLevel(foundTag.Properties[executeProp])
-                .Where(t => !string.IsNullOrEmpty(t));
-
-            Log.Debug($"Splitting execute into tags: {string.Join(" | ", executeTags)}");
-
-            foreach (var execTagEntry in executeTags)
-            {
-                Log.Debug($"Processing execTag string: \"{execTagEntry}\"");
-                var (tagName, rawArgs) = ParseTagWithArgs(execTagEntry);
-
-                // Resolve each rawArg via localVariables
-                var resolvedArgs = rawArgs
-                    .Select(a => localVariables.ContainsKey(a) ? localVariables[a] : a)
-                    .ToArray();
-
-                Log.Debug($"→ Parsed tag: {tagName} with resolved args: [{string.Join(", ", resolvedArgs)}]");
-
-                // Execute child, then append
-                var childOutput = ExecuteTag(
-                    player, tagName,
-                    resolvedArgs,
-                    result,
-                    new Dictionary<string, string>(localVariables)
-                );
-
-                Log.Debug($"→ Child \"{tagName}\" returned: \"{childOutput}\"");
-                result = result + " " + childOutput;
-                Log.Debug($"→ New result after appending: \"{result}\"");
-            }
-        }
-
-        return result + additionalResult;
-        }
-        
-        private static List<string> SplitTopLevel(string input)
+        public static List<string> SplitTopLevel(string input)
         {
             var parts = new List<string>();
             if (string.IsNullOrEmpty(input)) return parts;
 
             var sb = new StringBuilder();
-            int depth = 0;
+            var depth = 0;
 
             foreach (char c in input)
             {
@@ -352,8 +285,8 @@ namespace SaskycStylesEasy.Classes
             parts.Add(sb.ToString().Trim());
             return parts;
         }
-        
-        private static (string tagName, string[] args) ParseTagWithArgs(string input)
+    
+        public static (string tagName, string[] args) ParseTagWithArgs(string input)
         {
             var match = Regex.Match(input, @"^(\w+)(?:\(([^)]*)\))?$");
             if (!match.Success)
