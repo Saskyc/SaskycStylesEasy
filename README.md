@@ -14,7 +14,7 @@ Plugin creates folder in your plugins folder (where the .dll is located)
 Then you write inside "tags" that may be executed etc. Tags can't have duplicated
 
 So saskyc tell us the structure! Sure.
-
+```
 TagName {
   property: thing;
   variable: thing;
@@ -24,28 +24,28 @@ TagName(hexColor, myText) {
   text: myText;
   color: hexColor;
 }
-
+```
 ### Example:
-
+```
 tagName {
   text: hello world;
   bold: true;
   hintId: epicId;
   hintX: 0;
   hintY: 700;
-  hintTime: 8;
+  hintDuration: 8;
   align: left;
   show: true;
 }
-
+```
 ### Explain of structure
-The text is used as the base basically meaning the thing mainly going to be used.
-Bold makes the text use <b> around it.
-hintId adds hint Id to it if 2 of them will be in the same use the before one will be deleted.
-hintX is the X coordinate alongside hintY being the Y coordinate.
-hintTime is how long the hint lasts.
-align is where it should be located. modes left | center | right.
-show means to actually show hint you require to add hintX, hintY, hintId and show.
+* The `text` is used as the base basically meaning the thing mainly going to be used.
+* `Bold` makes the text use <b> around it.
+* `hintId` adds hint Id to it if 2 of them will be in the same use the before one will be deleted.
+* `hintX` is the X coordinate alongside hintY being the Y coordinate.
+* `hintDuration` is how long the hint lasts.
+* `align` is where it should be located. modes left | center | right.
+* `show` means to actually show hint you require to add hintX, hintY, hintId and show.
 
 # The tags
 
@@ -77,6 +77,7 @@ show means to actually show hint you require to add hintX, hintY, hintId and sho
 
 # Example of changing normal tags to .sse
 ### Before:
+```
 <line-height=-200>\n</line-height>
 <size=60><i><color=#ffe6a6>📝</color> <u>You are</u><color=#e85c39></i>❓</color></size>
 <size=50><b>Researcher</b></size>
@@ -101,4 +102,188 @@ you may play in the</u> <color=#62b8ff><b>light</b></color></size>
 <color=#4bbbdc><size=25>⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬⏬</size></color>
 <size=20>Your job is to help others</size><size=20>
 <size=20>Do their job</size>
-### After:
+```
+<details>
+<summary>### After:</summary>
+```
+roleShowManager{
+    execute: header, subHeader, area46InfoHeader, lastText;
+}
+
+header {
+    size: 60;
+    text: You are;
+    execute: headerFirstEmoji, headerSecondEmoji;
+
+    hintId: header id;
+    hintX: 0;
+    hintY: 200;
+    hintDuration: 8;
+
+    show: true;
+}
+
+subHeader {
+    text: Researcher;
+    size: 50;
+    align: center;
+    bold: true;
+    hintid: subHeader;
+    hintX: 0;
+    hintY: 260;
+    hintDuration: 8;
+    show: true;
+}
+
+area46InfoHeaderEnclosing {
+    align: right;
+}
+
+area46HeaderWarn{
+    size: 30;
+    text: ⚠️;
+    align: right;
+    color: #ffb600;
+}
+
+area46InfoHeader{
+    text: ;
+    addition: 
+        area46HeaderWarn, 
+        area64HeaderTextPart, 
+        area46HeaderWarn;
+    enclose: area46InfoHeaderEnclosing;
+    execute: area46FirstSmallText, area46SecondSmallText, area46ThirdSmallText;
+    hintid: area64InfoHeader;
+    hintX: 0;
+    hintY: 530;
+    hintDuration: 8;
+    show: true;
+}
+
+area64HeaderTextPart{
+    text: Area-46;
+    size: 30;
+}
+
+DynamicText(inputText, inputBold, inputColor, inputUnderline){
+    size: 20;
+    align: right;
+    bold: inputBold;
+    underline: inputUnderline;
+    text: inputText;
+    color: inputColor;
+}
+
+area46FirstSmallText {
+    text: ;
+
+    hintid: area46FirstSmallText;
+    hintX: 0;
+    hintY: 560;
+    hintDuration: 8;
+
+    addition: 
+        DynamicText(We develop in, false, white, true), 
+        DynamicText(dark, true, #7e7f80, false), 
+        DynamicText(so, false, white, true);
+    
+    show: true;
+}
+
+area46SecondSmallText {
+    text: ;
+
+    hintid: area46SecondSmallText;
+    hintX: 0;
+    hintY: 580;
+    hintDuration: 8;
+
+    addition: 
+        DynamicText(you may play in the, false, white, true),
+        DynamicText(light, true, #62b8ff, false);
+    
+    show: true;
+}
+
+enclosingTest {
+    text: s;
+    italic: true;
+    align: left;
+}
+
+area46ThirdSmallText {
+    text: ;
+
+    hintid: area46ThirdSmallText;
+    hintX: 0;
+    hintY: 600;
+    hintDuration: 8;
+    enclose: enclosingTest;
+
+    addition: 
+        DynamicText(Site Inspection, true ,white, false);
+    
+    show: true;
+}
+
+headerFirstEmoji {
+    hintId: header first emoji id;
+    hintX: -430;
+    hintY: 200;
+    hintDuration: 8;
+    text: 📝;
+    size: 60;
+    italic: true;
+    color: #ffe6a6;
+    show: true;
+}
+
+headerTextPart {
+    text: You are;
+    size: 60;
+    underline: true;
+    italic: true;
+}
+
+headerSecondEmoji {
+    hintId: header emoji id;
+    hintX: 270;
+    hintY: 200;
+    hintDuration: 8;
+    text: ❓;
+    size: 60;
+    color: #e85c39;
+    show: true;
+}
+
+lastText {
+    text: ;
+    execute: FirstDifference, SecondDifference;
+}
+
+FirstDifference {
+    color: #000000aa;
+    size: 500;
+    text: █;
+    width: 25%;
+    hintid: firstDifferencee;
+    hintX: 0;
+    hintY: 900;
+    hintDuration: 8;
+    show: true;
+}
+
+SecondDifference {
+    color: #000000aa;
+    size: 500;
+    text: █;
+    width: 25%;
+    hintid: secondDifferencee;
+    hintX: 50;
+    hintY: 900;
+    hintDuration: 8;
+    show: true;
+}
+```
+</details>
