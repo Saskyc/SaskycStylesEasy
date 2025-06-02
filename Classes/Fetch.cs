@@ -12,23 +12,8 @@ namespace SaskycStylesEasy.Classes
         public static Regex TagRegex = new(@"(?<tag>\w+)(\s*\((?<args>[^\)]*)\))?\s*\{(?<body>[^}]*)\}", RegexOptions.Compiled);
         public static Regex PropertyRegex = new(@"(?<key>\w+)\s*:\s*(?<value>[^;]+);", RegexOptions.Compiled);
         
-        public static void FetchAllPropertiesToTags()
+        public static void IterateEachFile(string[] sseFiles)
         {
-            var dllDirectory = Paths.Plugins;
-            if (dllDirectory == null) return;
-
-            var sseFolderPath = Path.Combine(dllDirectory, "SaskycStylesEasy");
-            if (!Directory.Exists(sseFolderPath))
-            {
-                Log.Error("❌ Folder SaskycStylesEasy does not exist.");
-                return;
-            }
-
-            var sseFiles = Directory.GetFiles(sseFolderPath, "*.sse", SearchOption.AllDirectories);
-
-            // Clear out the existing tag list before repopulating
-            Tag.List.Clear();
-
             foreach (var file in sseFiles)
             {
                 Log.Debug($"\nParsing file: {Path.GetFileName(file)}");
@@ -47,7 +32,13 @@ namespace SaskycStylesEasy.Classes
                 // Reverted regex: capture tagName, optional (args), and { body } up to the first }
                 var tagMatches = TagRegex.Matches(content);
 
-                foreach (Match match in tagMatches)
+                
+            }
+        }
+        
+        public static void IterateEachTag(CollectionMatch tagMatches)
+        {
+            foreach (Match match in tagMatches)
                 {
                     var tagName = match.Groups["tag"].Value.Trim();
                     var body = match.Groups["body"].Value.Trim();
@@ -117,7 +108,26 @@ namespace SaskycStylesEasy.Classes
 
                     Tag.List.Add(fetchedTag);
                 }
+        }
+
+        public static void FetchAllPropertiesToTags()
+        {
+            var dllDirectory = Paths.Plugins;
+            if (dllDirectory == null) return;
+
+            var sseFolderPath = Path.Combine(dllDirectory, "SaskycStylesEasy");
+            if (!Directory.Exists(sseFolderPath))
+            {
+                Log.Error("❌ Folder SaskycStylesEasy does not exist.");
+                return;
             }
+
+            var sseFiles = Directory.GetFiles(sseFolderPath, "*.sse", SearchOption.AllDirectories);
+
+            // Clear out the existing tag list before repopulating
+            Tag.List.Clear();
+
+            IterateEachFile(sseFiles)
         }
     }
 }
