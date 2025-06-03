@@ -36,7 +36,7 @@ namespace SaskycStylesEasy.Classes
             }
         }
         
-        public static void IterateEachTag(CollectionMatch tagMatches)
+        public static void IterateEachTag(MatchCollection tagMatches)
         {
             foreach (Match match in tagMatches)
                 {
@@ -127,7 +127,7 @@ namespace SaskycStylesEasy.Classes
             // Clear out the existing tag list before repopulating
             Tag.List.Clear();
 
-            IterateEachFile(sseFiles)
+            IterateEachFile(sseFiles);
         }
     }
 }

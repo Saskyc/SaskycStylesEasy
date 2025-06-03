@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{C2FF7E23-CB53-44B0-8F08-319BF60A3A5C}|SaskycStylesEasy.csproj|solutionrelative:classes\\fetch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C2FF7E23-CB53-44B0-8F08-319BF60A3A5C}|SaskycStylesEasy.csproj|c:\\users\\martin.saska\\source\\repos\\saskycstyleseasy\\commands\\tagtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C2FF7E23-CB53-44B0-8F08-319BF60A3A5C}|SaskycStylesEasy.csproj|C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\commands\\tagtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C2FF7E23-CB53-44B0-8F08-319BF60A3A5C}|SaskycStylesEasy.csproj|solutionrelative:commands\\tagtest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,8 +18,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -30,8 +34,7 @@
               "RelativeToolTip": "Commands\\TagTest.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAawBEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T09:27:05.049Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T09:27:05.049Z"
             },
             {
               "$type": "Document",
@@ -41,7 +44,7 @@
               "RelativeDocumentMoniker": "Classes\\Fetch.cs",
               "ToolTip": "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\Classes\\Fetch.cs",
               "RelativeToolTip": "Classes\\Fetch.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAWwCcAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAAAgwCcAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-03T09:06:08.958Z",
               "EditorCaption": ""

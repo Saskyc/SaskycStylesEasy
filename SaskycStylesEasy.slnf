@@ -1,0 +1,8 @@
+{
+  "solution": {
+    "path": "SaskycStylesEasy.sln",
+    "projects": [
+      "SaskycStylesEasy.csproj"
+    ]
+  }
+}
