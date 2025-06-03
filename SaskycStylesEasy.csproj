@@ -60,6 +60,7 @@
     <Compile Include="Classes\Fetch.cs" />
     <Compile Include="Classes\Property.cs" />
     <Compile Include="Classes\Tag.cs" />
+    <Compile Include="Classes\TagComplete.cs" />
     <Compile Include="Classes\WatcherEvents.cs" />
     <Compile Include="Commands\TagTest.cs" />
     <Compile Include="Config.cs" />

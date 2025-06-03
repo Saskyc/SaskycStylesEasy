@@ -17,41 +17,32 @@ public class ExecuteProperty : Property
     public override string Start { get; set; } = "";
     public override ValueType ParserValue { get; set; } = ValueType.String;
     public override string End { get; set; } = "";
+    public override string[] needed_variables { get; set; } = [];
+    public override int Priority { get; set; } = 8;
 
-    // Execute property method - input: arguments + text to process
-    public virtual void Execute(Tag tag, Dictionary<string, string> localVariables, Player player, string result)
+    public override string Execute(Tag tag, string value, Player player, string result)
     {
-        // Use SplitTopLevel instead of string.Split(',')
-        var executeTags = Tag.SplitTopLevel(tag.Properties[this])
-            .Where(t => !string.IsNullOrEmpty(t));
-
-        Log.Debug($"    Splitting execute into tags: {string.Join(" | ", executeTags)}");
-
-        foreach (var execTagEntry in executeTags)
+        var childOutput = "";
+        foreach (var tagsCompleted in TagComplete.Get(value))
         {
-            Log.Debug($"    Processing execTag string: \"{execTagEntry}\"");
-            var (tagName, rawArgs) = Tag.ParseTagWithArgs(execTagEntry);
+            Log.Debug($"    Processing additionTag string: \"{tagsCompleted.Tag.Name}\"");
 
-            // Resolve each rawArg via localVariables
-            var resolvedArgs = rawArgs
-                .Select(a => localVariables.TryGetValue(a, out var variable) ? variable : a)
-                .ToArray();
-
-            Log.Debug($"    → Parsed tag: {tagName} with resolved args: [{string.Join(", ", resolvedArgs)}]");
-
-            // Execute child, then append
-            var childOutput = Tag.ExecuteTag(
-                player, tagName,
-                resolvedArgs,
+            childOutput = Tag.ExecuteTag(
+                player, tagsCompleted.Tag.Name,
+                tagsCompleted.Arguments,
                 out var start,
                 out var content,
                 out var end,
                 defaultText: result
             );
-            
-            Log.Info($"    RESULT BEFORE: {result}");
-            result = result + " " + childOutput;
-            Log.Info($"    RESULT AFTER {result}");
         }
+
+        return string.Empty;
+    }
+
+    public override void Process(Tag tag, string value, out string start, out string end)
+    {
+        start = string.Empty;
+        end = string.Empty;
     }
 }

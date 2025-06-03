@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Exiled.API.Features;
+using HarmonyLib;
 using SaskycStylesEasy.Classes;
 
 namespace SaskycStylesEasy.Propertiess;
@@ -11,36 +13,33 @@ public class AdditionProperty : Property
     public override string Start { get; set; } = string.Empty;
     public override ValueType ParserValue { get; set; } = ValueType.String;
     public override string End { get; set; } = string.Empty;
+    public override string[] needed_variables { get; set; } = [];
+    public override int Priority { get; set; } = 5;
 
-    public string Add(Tag tag, Dictionary<string, string> localVariables, Player player, string result)
+    public override string Execute(Tag tag, string value, Player player, string result)
     {
-        var tagsToAdd = Tag.SplitTopLevel(tag.Properties[this])
-            .Where(t => !string.IsNullOrEmpty(t));
-
-        foreach (var tagEntry in tagsToAdd)
+        foreach (var tagsCompleted in TagComplete.Get(value))
         {
-            Log.Debug($"    Processing additionTag string: \"{tagEntry}\"");
-            var (tagName, rawArgs) = Tag.ParseTagWithArgs(tagEntry);
-
-            var resolvedArgs = rawArgs
-                .Select(a => localVariables.TryGetValue(a, out var variable) ? variable : a)
-                .ToArray();
+            Log.Debug($"    Processing additionTag string: \"{tagsCompleted.Tag.Name}\"");
 
             var childOutput = Tag.ExecuteTag(
-                player, tagName,
-                resolvedArgs,
+                player, tagsCompleted.Tag.Name,
+                tagsCompleted.Arguments,
                 out var start,
                 out var content,
                 out var end,
                 defaultText: ""
             );
-            
-            Log.Info($"    RESULT BEFORE: {result}");
             result += " " + childOutput;
-            Log.Info($"    RESULT AFTER: {result}");
         }
         
         return result;
+    }
+
+    public override void Process(Tag tag, string value, out string start, out string end)
+    {
+        start = string.Empty;
+        end = string.Empty;
     }
 }
 
