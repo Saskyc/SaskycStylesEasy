@@ -30,9 +30,6 @@ namespace SaskycStylesEasy.Classes
 
             var sseFiles = Directory.GetFiles(sseFolderPath, "*.sse", SearchOption.AllDirectories);
 
-            // Clear out the existing tag list before repopulating
-            Tag.List.Clear();
-
             foreach (var file in sseFiles)
                 FetchFile(file);
         }
@@ -60,12 +57,12 @@ namespace SaskycStylesEasy.Classes
                 var body = match.Groups["body"].Value.Trim();
                 var argsGroup = match.Groups["args"].Success ? match.Groups["args"].Value : "";
 
-                FetchTag(tagName, body, argsGroup);
+                FetchTag(tagName, body, argsGroup, file);
             }
                 
         }
         
-        public static void FetchTag(string tagName, string body, string argsGroup)
+        public static void FetchTag(string tagName, string body, string argsGroup, string tagPath)
         {
             Log.Debug($"    FetchTag method executed. Arguments:\n      tagName: {tagName}\n      body: {body}\n      argsGroup: {argsGroup}");
             var argList = argsGroup
@@ -95,6 +92,7 @@ namespace SaskycStylesEasy.Classes
                 FetchProperty(key, value, fetchedTag);
             }
 
+            fetchedTag.Path = tagPath;
             Tag.List.Add(fetchedTag);
         }
 

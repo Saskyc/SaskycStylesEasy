@@ -20,7 +20,9 @@ namespace SaskycStylesEasy.Classes
         public List<string> Arguments { get; set; } = new();
         
         public static List<Tag> List = new();
-        
+
+        public string Path { get; set; }
+
         public Dictionary<string, string> Variables { get; set; } = new();
         
         public Tag(string name, Dictionary<Property, string> properties, List<string> args = null)
@@ -69,7 +71,7 @@ namespace SaskycStylesEasy.Classes
         
         public static string ExecuteTag(Player player, string tag, string[] arguments, out string startTags, out string content, out string endTags, string defaultText = "", Dictionary<string, string> localVariables = null)
         {
-            Fetch.FetchAllPropertiesToTags();
+            //Fetch.FetchAllPropertiesToTags();
             startTags = string.Empty;
             content = string.Empty;
             endTags = string.Empty;

@@ -1,26 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {}
+    "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {}
   },
   "projects": {
-    "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {
+    "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
+        "projectUniqueName": "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
         "projectName": "SaskycStylesEasy",
-        "projectPath": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
-        "packagesPath": "C:\\Users\\martin.saska\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\obj\\",
+        "projectPath": "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
+        "packagesPath": "C:\\Users\\Marti\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
-        "UsingMicrosoftNETSdk": false,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\martin.saska\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\Marti\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,11 +29,6 @@
           "net48": {
             "projectReferences": {}
           }
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {

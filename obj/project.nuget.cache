@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "jXkpBAQw/bs=",
+  "dgSpecHash": "swYIMl2yOhg7+CnMoNxsZ9s1a5/O+qzHOiTwkhyRrwBo8Q/9j+zwlm3dO2Cv5SVpvmr9zhjqn4T4gnsUVYSFpQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
+  "projectFilePath": "C:\\Users\\Marti\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\martin.saska\\.nuget\\packages\\exmod.exiled\\9.6.0\\exmod.exiled.9.6.0.nupkg.sha512"
+    "C:\\Users\\Marti\\.nuget\\packages\\exmod.exiled\\9.6.0\\exmod.exiled.9.6.0.nupkg.sha512"
   ],
   "logs": []
 }

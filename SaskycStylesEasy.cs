@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Features;
 using SaskycStylesEasy.Classes;
+using System.IO;
 
 namespace SaskycStylesEasy 
 {
@@ -10,46 +11,32 @@ namespace SaskycStylesEasy
         public override void OnEnabled()
         {
             Instance = this;
-            
-            Log.Debug("Start of program.");
-            Ensuring.EnsureSaskycStylesFolder();
-            Ensuring.PrintAllSseFiles();
-            
             Property.RegisterAll();
-            
+            Ensuring.EnsureSaskycStylesFolder();
             Fetch.FetchAllPropertiesToTags();
-            
-            Log.Debug("----------All of tags registered:");
-            foreach (var property in Property.List)
-            {
-                Log.Debug(property.Name);
-                
-                //if (property.End == string.Empty)
-                //{
-                //    Log.Debug($"{property.Start.Replace("%value%", property.ParserValue.ToString())}ExampleText");
-                //    continue;
-                //}
-                //
-                //Log.Debug($"{property.Start.Replace("%value%", property.ParserValue.ToString())}ExampleText{property.End}");
-            }
 
-            Log.Debug("----------All of FOUND tags registered:");
-            foreach (var tag in Tag.List)
-            {
-                Log.Debug($"Name: {tag.Name}");
-                Log.Debug("Properties:");
-                foreach (var property in tag.Properties)
-                {
-                    Log.Debug($"  {property.Key.Name}: {property.Value};");
-                }
-            }
-            
-            //Tag.ExecuteTag("myTag", ["#whatever"], "text");
-            
-            //var text = (Tag.ExecuteTag("MyColorTag", ["#whatever"], "text"));
-            Log.Debug("'''''''''''''''''''");
-            //Log.Debug(text);
-            Log.Debug("'''''''''''''''''''");
+            var sseFolderPath = Path.Combine(Paths.Plugins, "SaskycStylesEasy");
+
+            using var watcher = new FileSystemWatcher(sseFolderPath);
+
+            watcher.NotifyFilter = NotifyFilters.Attributes
+                                 | NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastAccess
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Security
+                                 | NotifyFilters.Size;
+
+            watcher.Changed += WatcherEvents.OnChanged;
+            watcher.Created += WatcherEvents.OnCreated;
+            watcher.Deleted += WatcherEvents.OnDeleted;
+            watcher.Renamed += WatcherEvents.OnRenamed;
+
+            watcher.Filter = "*.sse";
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+
             base.OnEnabled();
         }
 
