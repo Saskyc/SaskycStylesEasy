@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {}
+    "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {}
   },
   "projects": {
-    "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {
+    "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
+        "projectUniqueName": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
         "projectName": "SaskycStylesEasy",
-        "projectPath": "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
+        "projectPath": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\SaskycStylesEasy.csproj",
         "packagesPath": "C:\\Users\\martin.saska\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\martin.saska\\source\\repos\\SaskycStylesEasy\\obj\\",
+        "outputPath": "C:\\Users\\martin.saska\\Source\\Repos\\SaskycStylesEasy\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "UsingMicrosoftNETSdk": false,
