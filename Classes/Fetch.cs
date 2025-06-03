@@ -16,6 +16,8 @@ namespace SaskycStylesEasy.Classes
 
         public static void FetchAllPropertiesToTags()
         {
+            Log.Debug("Starting fetch debug. MethodName: [FetchAllPropertiesToTags]");
+
             var dllDirectory = Paths.Plugins;
             if (dllDirectory == null) return;
 
@@ -37,7 +39,7 @@ namespace SaskycStylesEasy.Classes
 
         public static void FetchFile(string file)
         {
-            Log.Debug($"\nParsing file: {Path.GetFileName(file)}");
+            Log.Debug($"  FetchFile method executed. Arguments: \n    File: {Path.GetFileName(file)}");
 
             string content;
             try
@@ -46,7 +48,7 @@ namespace SaskycStylesEasy.Classes
             }
             catch (Exception ex)
             {
-                Log.Error($"Could not read file {file}: {ex.Message}");
+                Log.Error($"  File could not be read\n    {ex.Message}");
                 return;
             }
 
@@ -65,23 +67,25 @@ namespace SaskycStylesEasy.Classes
         
         public static void FetchTag(string tagName, string body, string argsGroup)
         {
+            Log.Debug($"    FetchTag method executed. Arguments:\n      tagName: {tagName}\n      body: {body}\n      argsGroup: {argsGroup}");
             var argList = argsGroup
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(arg => arg.Trim())
                 .ToList();
 
-            // Create a new Tag with an empty Dictionary<Property,string> and the parsed argList
             var fetchedTag = new Tag(
                 tagName,
                 new Dictionary<Property, string>(),
                 argList
             );
 
-            Log.Debug($"\n🔍 Validating tag: {tagName}");
 
-            // Find all key:value; pairs inside the tag body
-
-
+            if (Tag.List.Any(existing =>
+                existing.Name == fetchedTag.Name))
+            {
+                Log.Debug($"    Tag was duplicate. Skipping it.");
+                return;
+            }
 
             var propertyMatches = PropertyRegex.Matches(body);
             foreach (Match propMatch in propertyMatches)
@@ -91,23 +95,12 @@ namespace SaskycStylesEasy.Classes
                 FetchProperty(key, value, fetchedTag);
             }
 
-            // If a tag with the same name already exists, skip adding this one
-            if (Tag.List.Any(existing =>
-                existing.Name.Equals(fetchedTag.Name, StringComparison.OrdinalIgnoreCase)))
-            {
-                Log.Debug($"⚠️ Duplicate tag skipped: {fetchedTag.Name}");
-                return;
-            }
-            // ** Dump out both Properties and Variables for this tag: **
-            Log.Debug($"(DEBUG) Tag “{fetchedTag.Name}” has:");
-            Log.Debug($"  Properties = [{string.Join(", ", fetchedTag.Properties.Keys.Select(p => $"{p.Name}: {fetchedTag.Properties[p]}"))}]");
-            Log.Debug($"  Variables  = [{string.Join(", ", fetchedTag.Variables.Select(kv => $"{kv.Key}: {kv.Value}"))}]");
-
             Tag.List.Add(fetchedTag);
         }
 
         public static void FetchProperty(string key, string value, Tag tag)
         {
+            Log.Debug($"      FetchProperty method executed. Arguments:\n        key: {key}\n        value: {value}");
             // Check if this key corresponds to a registered Property subclass
             var registeredProp = Property.List
                 .FirstOrDefault(p => p.Name.Equals(key, StringComparison.OrdinalIgnoreCase));
